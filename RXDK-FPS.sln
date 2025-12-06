@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36717.8 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RXDK-FPS", "RXDK-FPS\RXDK-FPS.vcxproj", "{F4CDB15A-AC9C-488B-AC60-8545879D1000}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F4CDB15A-AC9C-488B-AC60-8545879D1000}.Debug|x86.ActiveCfg = Debug|Win32
+		{F4CDB15A-AC9C-488B-AC60-8545879D1000}.Debug|x86.Build.0 = Debug|Win32
+		{F4CDB15A-AC9C-488B-AC60-8545879D1000}.Release|x86.ActiveCfg = Release|Win32
+		{F4CDB15A-AC9C-488B-AC60-8545879D1000}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0A43D3AB-2F09-445C-AB92-FE777ADCE905}
+	EndGlobalSection
+EndGlobal
