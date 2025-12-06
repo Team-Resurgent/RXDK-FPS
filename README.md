@@ -1,5 +1,9 @@
 # RXDK-FPS
 
-Port of JFR's Xbox FPS Ovelay to RXDK
+Port of JFR's Xbox FPS Overlay to RXDK
 
-https://github.com/JayFoxRox/xbox-fps-overlay
+[xbox-fps-overlay](https://github.com/JayFoxRox/xbox-fps-overlay)
+
+Updated to also show Memory use...
+
+![Example Screenshot](images/example.png)
