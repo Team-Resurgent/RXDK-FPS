@@ -5,26 +5,11 @@
 #include <xtl.h>
 #include "font.h"
 #include <xbdm.h>
-#include <sstream>
+#include <stdio.h>
 
 namespace
 {
     LONGLONG lastFrame = 0;
-}
-
-static char* FormatString(const char* format, ...)
-{
-    va_list args;
-    va_start(args, format);
-
-    int length = _vsnprintf(NULL, 0, format, args);
-
-    char* result = (char*)malloc(length + 1);
-    _vsnprintf(result, length, format, args);
-    result[length] = 0;
-
-    va_end(args);
-    return result;
 }
 
 void FPS::UpdateFramebuffer(unsigned char* framebuffer)
@@ -66,8 +51,18 @@ void FPS::UpdateFramebuffer(unsigned char* framebuffer)
 	memset(&memStatus, 0, sizeof(memStatus));
 	GlobalMemoryStatus(&memStatus);
 
-    char* message = message = delta > 99999 ? FormatString("RXDK FPS") : FormatString("FPS: %i MEM: %luMB/%luMB", (int)delta, (ULONG)(memStatus.dwAvailPhys / (1024 * 1024)), (ULONG)(memStatus.dwTotalPhys / (1024 * 1024)));
- 
+    char message[256]; 
+    if (delta > 99999) {
+        sprintf(message, "RXDK FPS");
+    }
+    else 
+    {
+        sprintf(message, "FPS: %llu MEM: %luMB/%luMB",
+            delta,
+            (ULONG)(memStatus.dwAvailPhys / (1024 * 1024)),
+            (ULONG)(memStatus.dwTotalPhys / (1024 * 1024)));
+    }
+
     int x = 0;
     for (int i = 0; i < (int)strlen(message); i++)
     {
@@ -99,8 +94,6 @@ void FPS::UpdateFramebuffer(unsigned char* framebuffer)
 
         x += 8;
     }
-
-    free(message);
 
     int width = x - 1;
     int height = HEIGHT;
