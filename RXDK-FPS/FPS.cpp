@@ -55,9 +55,14 @@ void FPS::UpdateFramebuffer(unsigned char* framebuffer)
     if (delta > 99999) {
         sprintf(message, "RXDK FPS");
     } else {
-        sprintf(message, "FPS: %i MEM: %iMB/%iMB", (int)delta, (int)(memStatus.dwAvailPhys / (1024 * 1024)), (int)(memStatus.dwTotalPhys / (1024 * 1024)));
-    }
-
+		sprintf(
+            message,
+            "FPS: %i MEM: %iMB/%iMB",
+            (int)delta,
+            (int)((memStatus.dwTotalPhys - memStatus.dwAvailPhys) / (1024 * 1024)),
+            (int)(memStatus.dwTotalPhys / (1024 * 1024))
+        );
+	}
     int x = 0;
     for (int i = 0; i < (int)strlen(message); i++)
     {
