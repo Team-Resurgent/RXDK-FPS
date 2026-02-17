@@ -28,4 +28,12 @@ extern "C"
     ULONGLONG NTAPI MmGetPhysicalAddress(
         IN PVOID Address
     );
+
+    LONG NTAPI HalReadSMBusValue(UCHAR devddress, UCHAR offset, UCHAR readdw, DWORD* pdata);
 }
+
+#define PIC_ADDRESS 0x20
+#define MB_TEMP 0x0A
+#define CPU_TEMP 0x09
+
+#define HalReadSMBusByte(SlaveAddress, CommandCode, DataValue) HalReadSMBusValue(SlaveAddress, CommandCode, FALSE, DataValue)

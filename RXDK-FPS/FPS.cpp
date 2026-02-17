@@ -6,10 +6,58 @@
 #include "font.h"
 #include <xbdm.h>
 #include <stdio.h>
+#include <stdint.h>
 
 namespace
 {
     LONGLONG lastFrame = 0;
+    bool isXbox16 = false;
+    bool gotIsXbox16 = false;
+    int cpuTemp = 0;
+    int mbTemp = 0;
+}
+
+static bool IsXbox16()
+{
+    if (gotIsXbox16 == false)
+    {
+        gotIsXbox16 = true;
+        DWORD temp;
+        char ver[6];
+        HalReadSMBusByte(0x20, 0x01, &temp);
+        ver[0] = (char)temp;
+        HalReadSMBusByte(0x20, 0x01, &temp);
+        ver[1] = (char)temp;
+        HalReadSMBusByte(0x20, 0x01, &temp);
+        ver[2] = (char)temp;
+        ver[3] = 0;
+        ver[4] = 0;
+        ver[5] = 0;
+        isXbox16 = strcmp(ver, ("P2L")) == 0;
+    }
+    return isXbox16;
+}
+
+static int32_t GetCpuTemp()
+{
+    if (IsXbox16()) {
+        DWORD cpu = 0;
+        HalReadSMBusByte(0x4C << 1, 0x01, &cpu);
+        DWORD cpudec = 0;
+        HalReadSMBusByte(0x4C << 1, 0x10, &cpudec);
+        return (uint8_t)(cpu + cpudec / 256);
+    }
+
+    DWORD cpuTemp = 0;
+    HalReadSMBusByte(PIC_ADDRESS, CPU_TEMP, &cpuTemp);
+    return cpuTemp;
+}
+
+static int32_t GetMbTemp() 
+{
+    DWORD tempMb = 0;
+    HalReadSMBusByte(PIC_ADDRESS, MB_TEMP, &tempMb);
+    return IsXbox16() ? (int32_t)((tempMb * 4) / 5) : (int32_t)tempMb;
 }
 
 void FPS::UpdateFramebuffer(unsigned char* framebuffer)
@@ -57,10 +105,12 @@ void FPS::UpdateFramebuffer(unsigned char* framebuffer)
     } else {
 		sprintf(
             message,
-            "FPS: %i MEM: %iMB/%iMB",
+            "FPS: %i MEM: %iMB/%iMB CPU: %i MB: %i",
             (int)delta,
             (int)((memStatus.dwTotalPhys - memStatus.dwAvailPhys) / (1024 * 1024)),
-            (int)(memStatus.dwTotalPhys / (1024 * 1024))
+            (int)(memStatus.dwTotalPhys / (1024 * 1024)),
+            (int)GetCpuTemp(), 
+            (int)GetMbTemp()
         );
 	}
     int x = 0;

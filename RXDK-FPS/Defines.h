@@ -1,6 +1,6 @@
 #pragma once
 
-#define WIDTH 256
+#define WIDTH 320
 #define HEIGHT 13
 
 #define OUT_X 16
